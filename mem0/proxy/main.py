@@ -95,7 +95,9 @@ class Completions:
         if not any([user_id, agent_id, run_id]):
             raise ValueError("One of user_id, agent_id, run_id must be provided")
 
-        if not litellm.supports_function_calling(model):
+        # Strip github_copilot/ prefix to check underlying model's function calling support
+        model_to_check = model.replace("github_copilot/", "") if model.startswith("github_copilot/") else model
+        if not litellm.supports_function_calling(model_to_check):
             raise ValueError(
                 f"Model '{model}' does not support function calling. Please use a model that supports function calling."
             )
@@ -106,6 +108,7 @@ class Completions:
             relevant_memories = self._fetch_relevant_memories(messages, user_id, agent_id, run_id, filters, limit)
             logger.debug(f"Retrieved {len(relevant_memories)} relevant memories")
             prepared_messages[-1]["content"] = self._format_query_with_memories(messages, relevant_memories)
+
 
         response = litellm.completion(
             model=model,

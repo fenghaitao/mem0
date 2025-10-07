@@ -11,6 +11,7 @@ from mem0.configs.llms.ollama import OllamaConfig
 from mem0.configs.llms.openai import OpenAIConfig
 from mem0.configs.llms.vllm import VllmConfig
 from mem0.embeddings.mock import MockEmbeddings
+from mem0.embeddings.github_copilot import GitHubCopilotEmbedding
 
 
 def load_class(class_type):
@@ -139,6 +140,7 @@ class EmbedderFactory:
         "lmstudio": "mem0.embeddings.lmstudio.LMStudioEmbedding",
         "langchain": "mem0.embeddings.langchain.LangchainEmbedding",
         "aws_bedrock": "mem0.embeddings.aws_bedrock.AWSBedrockEmbedding",
+        "github_copilot": "mem0.embeddings.github_copilot.GitHubCopilotEmbedding",
     }
 
     @classmethod

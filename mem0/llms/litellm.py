@@ -67,7 +67,9 @@ class LiteLLM(LLMBase):
         Returns:
             str: The generated response.
         """
-        if not litellm.supports_function_calling(self.config.model):
+        # Strip github_copilot/ prefix to check underlying model's function calling support
+        model_to_check = self.config.model.replace("github_copilot/", "") if self.config.model.startswith("github_copilot/") else self.config.model
+        if not litellm.supports_function_calling(model_to_check):
             raise ValueError(f"Model '{self.config.model}' in litellm does not support function calling.")
 
         params = {
@@ -82,6 +84,10 @@ class LiteLLM(LLMBase):
         if tools:  # TODO: Remove tools if no issues found with new memory addition logic
             params["tools"] = tools
             params["tool_choice"] = tool_choice
+
+        # Add api_key for non-GitHub Copilot models (GitHub Copilot uses OAuth2)
+        if hasattr(self.config, 'api_key') and not self.config.model.startswith("github_copilot/"):
+            params["api_key"] = self.config.api_key
 
         response = litellm.completion(**params)
         return self._parse_response(response, tools)

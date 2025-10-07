@@ -24,6 +24,7 @@ class EmbedderConfig(BaseModel):
             "lmstudio",
             "langchain",
             "aws_bedrock",
+            "github_copilot",
         ]:
             return v
         else:

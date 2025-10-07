@@ -59,7 +59,7 @@ vector_stores = [
 llms = [
     "groq>=0.3.0",
     "together>=0.2.10",
-    "litellm>=1.74.0",
+    "litellm @ git+https://github.com/fenghaitao/litellm.git",
     "openai>=1.90.0",
     "ollama>=0.1.0",
     "vertexai>=0.1.0",
@@ -86,6 +86,9 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build]
 include = [
